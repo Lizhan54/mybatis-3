@@ -111,9 +111,12 @@ public class XMLConfigBuilder extends BaseBuilder {
     return configuration;
   }
 
+
+  //根据dtd文件，顺序读取各个全局配置文件的内容进行解析
   private void parseConfiguration(XNode root) {
     try {
       // issue #117 read properties first
+
       propertiesElement(root.evalNode("properties"));
       Properties settings = settingsAsProperties(root.evalNode("settings"));
       loadCustomVfsImpl(settings);
@@ -239,12 +242,17 @@ public class XMLConfigBuilder extends BaseBuilder {
       return;
     }
     Properties defaults = context.getChildrenAsProperties();
+
+    //resource与URL不能同时为空，也不能都不填，需要二选一
     String resource = context.getStringAttribute("resource");
     String url = context.getStringAttribute("url");
     if (resource != null && url != null) {
       throw new BuilderException(
+        //“properties”元素不能同时指定一个URL和一个resource的属性引用。请指定其中一个。
           "The properties element cannot specify both a URL and a resource based property file reference.  Please specify one or the other.");
     }
+
+    //根据类型的不同加载不同的文件读取读取
     if (resource != null) {
       defaults.putAll(Resources.getResourceAsProperties(resource));
     } else if (url != null) {

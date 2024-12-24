@@ -1,0 +1,48 @@
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+<!--  配置动态参数的地址-->
+  <properties resource="database.properties"/>
+<!--    resource：指定配置文件的类路径资源名。[相对地址]
+        url：指定配置文件的完整路径，[绝对地址]
+-->
+<!--  其他写法
+      <properties resource="database.properties">
+        <property name="userName" value="123456"/>
+      </properties>-->
+
+  <settings>
+    <!-- 全局配置设置 -->
+    <setting name="cacheEnabled" value="true"/>
+    <setting name="lazyLoadingEnabled" value="true"/>
+    <setting name="multipleResultSetsEnabled" value="true"/>
+    <setting name="useColumnLabel" value="true"/>
+    <setting name="useGeneratedKeys" value="false"/>
+    <setting name="defaultExecutorType" value="SIMPLE"/>
+    <setting name="defaultStatementTimeout" value="25000"/>
+  </settings>
+
+  <typeAliases>
+    <!-- 配置别名 -->
+    <typeAlias alias="User" type="com.example.User"/>
+  </typeAliases>
+
+  <environments default="development">
+    <environment id="development">
+      <transactionManager type="JDBC"/>
+      <dataSource type="POOLED">
+        <property name="driver" value="${driver}"/>
+        <property name="url" value="${url}"/>
+        <property name="username" value="${username}"/>
+        <property name="password" value="${password}"/>
+      </dataSource>
+    </environment>
+  </environments>
+
+  <mappers>
+    <!-- 注册 mapper 文件 -->
+    <mapper resource="com/example/UserMapper.xml"/>
+  </mappers>
+</configuration>
