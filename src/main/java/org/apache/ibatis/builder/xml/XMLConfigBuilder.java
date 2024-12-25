@@ -240,6 +240,20 @@ public class XMLConfigBuilder extends BaseBuilder {
     }
   }
 
+  /**
+   * 总结：   读取properties 时
+   *            1、优先读取 propertie标签中的属性值
+   *            2、读取 url或者 resource 属性中配置的文件属性值
+   *            3、读取 SqlSessionFactory创建时传入的properties值
+   *              ----- SqlSessionFactory build(InputStream inputStream, String environment, Properties properties)
+   *           由于  properties 是继承自HashTable,故同名属性值会被覆盖
+   *           故 属性值优先级如下：
+   *
+   *                构造函数传入的Properties  >   Url、resource配置    >   propertie标签
+   *
+   * @param context
+   * @throws Exception
+   */
   private void propertiesElement(XNode context) throws Exception {
     if (context == null) {
       return;
