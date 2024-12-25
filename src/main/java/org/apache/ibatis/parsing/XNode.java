@@ -252,10 +252,11 @@ public class XNode {
     return value == null ? def : Float.valueOf(value);
   }
 
-  public List<XNode> getChildren() {
+  public List<XNode>  getChildren() {
     List<XNode> children = new ArrayList<>();
     NodeList nodeList = node.getChildNodes();
     if (nodeList != null) {
+      //遍历所有的子标签（Node） ，将Node增强成XNode
       for (int i = 0, n = nodeList.getLength(); i < n; i++) {
         Node node = nodeList.item(i);
         if (node.getNodeType() == Node.ELEMENT_NODE) {
@@ -268,7 +269,10 @@ public class XNode {
 
   public Properties getChildrenAsProperties() {
     Properties properties = new Properties();
+
+    //遍历 properties的所有子标签
     for (XNode child : getChildren()) {
+      //读取属性值，封装成properties 对象（HashTable）
       String name = child.getStringAttribute("name");
       String value = child.getStringAttribute("value");
       if (name != null && value != null) {

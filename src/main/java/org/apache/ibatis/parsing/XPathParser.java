@@ -46,6 +46,9 @@ import org.xml.sax.SAXParseException;
  */
 public class XPathParser {
 
+  /**
+   * 解析处理XML文档的
+   */
   private final Document document;
   private boolean validation;
   private EntityResolver entityResolver;
@@ -211,10 +214,16 @@ public class XPathParser {
   }
 
   public XNode evalNode(Object root, String expression) {
+    /**
+     *
+     *
+     * XPathConstants.NODE  命名空间类型  作用： 用于唯一标识XML文档中的元素和属性。通过结合命名空间URI和本地名，它可以确保即使在不同的XML文档中，具有相同本地名的元素或属性也不会引起命名冲突
+     */
     Node node = (Node) evaluate(expression, root, XPathConstants.NODE);
     if (node == null) {
       return null;
     }
+    //增强 Node
     return new XNode(this, node, variables);
   }
 

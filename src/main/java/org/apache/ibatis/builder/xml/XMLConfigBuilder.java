@@ -107,16 +107,19 @@ public class XMLConfigBuilder extends BaseBuilder {
       throw new BuilderException("Each XMLConfigBuilder can only be used once.");
     }
     parsed = true;
+    // parser.evalNode("/configuration") 读取根节点
     parseConfiguration(parser.evalNode("/configuration"));
     return configuration;
   }
 
 
   //根据dtd文件，顺序读取各个全局配置文件的内容进行解析
+  //XNode root  configuration标签
   private void parseConfiguration(XNode root) {
     try {
       // issue #117 read properties first
 
+      //读取properties ，解析配置文件
       propertiesElement(root.evalNode("properties"));
       Properties settings = settingsAsProperties(root.evalNode("settings"));
       loadCustomVfsImpl(settings);
@@ -252,17 +255,22 @@ public class XMLConfigBuilder extends BaseBuilder {
           "The properties element cannot specify both a URL and a resource based property file reference.  Please specify one or the other.");
     }
 
-    //根据类型的不同加载不同的文件读取读取
+    //根据类型的不同加载不同的文件读取读取，并将读取到的内容复写到defaults
     if (resource != null) {
       defaults.putAll(Resources.getResourceAsProperties(resource));
     } else if (url != null) {
       defaults.putAll(Resources.getUrlAsProperties(url));
     }
+
+    //解析传的properties ，覆写之前的数据
     Properties vars = configuration.getVariables();
     if (vars != null) {
       defaults.putAll(vars);
     }
+    //将参数保存
     parser.setVariables(defaults);
+
+    //将参数放入核心配置文件
     configuration.setVariables(defaults);
   }
 
