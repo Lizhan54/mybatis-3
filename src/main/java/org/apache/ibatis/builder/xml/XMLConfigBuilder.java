@@ -121,6 +121,7 @@ public class XMLConfigBuilder extends BaseBuilder {
 
       //读取properties ，解析配置文件
       propertiesElement(root.evalNode("properties"));
+
       Properties settings = settingsAsProperties(root.evalNode("settings"));
       loadCustomVfsImpl(settings);
       loadCustomLogImpl(settings);
@@ -141,15 +142,27 @@ public class XMLConfigBuilder extends BaseBuilder {
   }
 
   private Properties settingsAsProperties(XNode context) {
+
+    //没有设置 setting 标签，返回空
     if (context == null) {
       return new Properties();
     }
+
+    //读取setting子标签
     Properties props = context.getChildrenAsProperties();
     // Check that all settings are known to the configuration class
+    // 翻译 检查所有的设置中的的类是否存在
+
+    // localReflectorFactory 反射工厂对象（详情见反射基础模块）
+
     MetaClass metaConfig = MetaClass.forClass(Configuration.class, localReflectorFactory);
+
+    //key为属性名
     for (Object key : props.keySet()) {
+
       if (!metaConfig.hasSetter(String.valueOf(key))) {
         throw new BuilderException(
+            //该设置键未知。请确保您拼写正确（区分大小写）。
             "The setting " + key + " is not known.  Make sure you spelled it correctly (case sensitive).");
       }
     }

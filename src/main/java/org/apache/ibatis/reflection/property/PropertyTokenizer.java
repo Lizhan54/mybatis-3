@@ -27,18 +27,23 @@ public class PropertyTokenizer implements Iterator<PropertyTokenizer> {
   private final String children;
 
   public PropertyTokenizer(String fullname) {
+    //abc[3].d
     int delim = fullname.indexOf('.');
     if (delim > -1) {
-      name = fullname.substring(0, delim);
-      children = fullname.substring(delim + 1);
+      name = fullname.substring(0, delim);     //abc[3]
+      children = fullname.substring(delim + 1); // d
     } else {
       name = fullname;
       children = null;
     }
     indexedName = name;
+
+    //abc[3]
     delim = name.indexOf('[');
     if (delim > -1) {
+      //index = 3
       index = name.substring(delim + 1, name.length() - 1);
+      //name = abc
       name = name.substring(0, delim);
     }
   }

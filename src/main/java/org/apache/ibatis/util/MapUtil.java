@@ -33,6 +33,10 @@ public class MapUtil {
     if (value != null) {
       return value;
     }
+    //computeIfAbsent 方法
+    //如果指定的键（key）尚未与某个值关联（或者关联的值为null），
+    // 则尝试使用提供的映射函数（mappingFunction）计算其值，并将其与指定的键关联起来。
+    // 如果键已经与一个非null值关联，则不会调用映射函数，而是直接返回该值。
     return map.computeIfAbsent(key, mappingFunction);
   }
 
